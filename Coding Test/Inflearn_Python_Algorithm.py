@@ -88,58 +88,72 @@
 # # print(Enum_List)
 # for i in Enum_List:
 #     print(Change_Set_Sum_Result_List[i],end=' ')
-# digit Sum Result
 
-# for i in range(A):
+
+# Digit_Sum_Result P6
+# A = int(input())
+# B = list(map(int,input().split()))
+# C = list()
+# D=B.copy()
+# ans =0
+# for j in range(A):
 #     while 1:
-#         tmp = B[i] // 10  # 12
-#         if tmp >0:
-#             ans = ans +1
-#         else:
+#         tmp = B[j] % 10
+#         ans= ans+tmp
+#         B[j] = B[j]//10
+#         if B[j] == 0:
 #             C.append(ans)
-#             ans = 0
+#             tmp= 0
+#             ans= 0
 #             break
-#         B[i] = B[i] / 10 # 12.5
+# max_value = max(C)
+# x_index = [index for index, value in enumerate(C) if value == max_value]
+# print(D[min(x_index)])
 
-A = int(input())
-B = list(map(int,input().split()))
-C = list()
-D=B.copy()
-ans =0
-for j in range(A):
-    while 1:
-        tmp = B[j] % 10
-        ans= ans+tmp
-        B[j] = B[j]//10
-        if B[j] == 0:
-            C.append(ans)
-            tmp= 0
-            ans= 0
-            break
-max_value = max(C)
-x_index = [index for index, value in enumerate(C) if value == max_value]
-print(D[min(x_index)])
+# Prime Number
+# def GetPrimeNoOpt(n):
+#     res = []
+#     for i in range(2, n+1):
+#         is_prime = True
+#         for j in range(2, i):
+#             if i % j == 0:
+#                 is_prime = False
+#                 break
+#         if is_prime:
+#             res.append(i)
+#     return res
+#
+# print(GetPrimeNoOpt(20))
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# N, M = map(int, input().split())
+# Prime_List = list()
+# a=1
+# for i in range(N,M+1):
+#     for j in range(N,i): #i-1 까지 나누자.
+#         if i%j==0: # 한 번이라도 나눠지면
+#             a=0
+#             break # 너는 소수가 아니다.
+#     if a==1:
+#         Prime_List.append(i)
+#     a=1
+# print(Prime_List)
+#
+# N=2
+# M=20
+# Prime_List=list()
+#
+# for i in range(N,M):
+#     Is_Prime = True
+#     for j in range(2,i):
+#         if i==j: # 2일떄의 예외처리
+#             Prime_List.append(i)
+#         if i%j ==0 : # 혹시 나눠 진다면, 소수가 아니다.
+#             Is_Prime = False
+#             break
+#     if Is_Prime == True:
+#         Prime_List.append(i)
+#
+# print(Prime_List)
 
 
 
