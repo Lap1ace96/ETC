@@ -155,23 +155,95 @@
 #
 # print(Prime_List)
 
+#에라토스테의 체
 
+# n=int(input())
+# ch = [0]*(n+1)
+# cnt = 0
+# for i in range(2,n+1):
+#     if ch[i]==0:
+#         cnt = cnt+1
+#         for j in range(i,n+1,i):
+#             ch[j]=1
+# print(cnt)
 
+# 8. Reverse_Prime
+# A= int(input())
+# B= list(map(int,input().split()))
+#
+# def reverse(x):
+#     res = 0
+#     while x>0:
+#         t= x%10
+#         res = res*10 +t
+#         x= x//10
+#     return res
+#
+# def isPrime(x):
+#     cnt = 0
+#     if x==1:
+#         return False
+#     for i in range(2,x):
+#         if (x%i==0): # 무언가 나누어 떨어지면?
+#             cnt = cnt+1
+#         if (cnt>2):
+#             return False
+#         else:
+#             return True
+#
+#
+# for i in B:
+#     tmp = reverse(i)
+#     if isPrime(tmp):
+#         print(tmp, end= ' ')
 
+#9 Dice_Game
+# N=int(input())
+# Maximum = list()
+# for i in range(N):
+#     a, b, c = map(int, input().split())
+#     if (a==b)&(b==c):
+#         Maximum.append(10000+a*1000)
+#     elif (a==b): # a와 b가 같을경우
+#         Maximum.append(1000+a*100)
+#     elif (a==c): # a와 c가 같을경우
+#         Maximum.append(1000+a*100)
+#     elif (b==c): # b와 c가 같을경우
+#         Maximum.append(1000 + b * 100)
+#     else:
+#         Maximum.append(max(a,b,c)*100)
+# print(max(Maximum))
 
+# #10, Score
 
+#N=int(input())
+#M=list(map(int,input().split()))
+N=int(input())
+M= list(map(int,input().split()))
+score_value = list()
+a=int(0)
+Noraml_Value =1
 
+while a<N-1:
+    if (M[a]==1):
+        score_value.insert(a,Noraml_Value)
+        for i in range(a+1,N):
+            if (M[a]== M[i]):
+                Noraml_Value= Noraml_Value+1
+                score_value.insert(i,Noraml_Value)
+                if (i==(N-1)):
+                    a=i
+            else:
+                Noraml_Value =1
+                a=i
+                break
+    elif (M[a]==0):
+        score_value.insert(a,0)
+        a=a+1
+        if (a==(N-1)):
+            if (M[a]==1):
+                score_value.insert(a,1) # 예외처리
 
-
-
-
-
-
-
-
-
-
-
-
+print(sum(score_value))
 
 
