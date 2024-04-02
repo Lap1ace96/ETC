@@ -1,27 +1,17 @@
-N=int(input())
-M= list(map(int,input().split()))
-score_value = list()
-a=int(0)
-Noraml_Value =1
+# 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19
+# 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
 
-while a<N-1:
-    if (M[a]==1):
-        score_value.insert(a,Noraml_Value)
-        for i in range(a+1,N):
-            if (M[a]== M[i]):
-                Noraml_Value= Noraml_Value+1
-                score_value.insert(i,Noraml_Value)
-                if (i==(N-1)):
-                    a=i
-            else:
-                Noraml_Value =1
-                a=i
-                break
-    elif (M[a]==0):
-        score_value.insert(a,0)
+Card = [i for i in range(1,21)]
+tmp=0
+for _ in range(10):
+    a, b= map(int, input().split()) # index 항상 +1
+    for _ in range((b-a+1)//2):
+        tmp = Card[a-1]
+        Card[a-1] = Card[b-1]
+        Card[b-1] = tmp
         a=a+1
-        if (a==(N-1)):
-            if (M[a]==1):
-                score_value.insert(a,1) # 예외처리
+        b=b-1
+    tmp = 0
 
-print(sum(score_value))
+for i in range(20):
+    print(Card[i], end=' ')

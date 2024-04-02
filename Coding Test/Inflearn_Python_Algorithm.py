@@ -217,33 +217,85 @@
 # #10, Score
 
 #N=int(input())
-#M=list(map(int,input().split()))
-N=int(input())
-M= list(map(int,input().split()))
-score_value = list()
-a=int(0)
-Noraml_Value =1
+# #M=list(map(int,input().split()))
+# N=int(input())
+# M= list(map(int,input().split()))
+# score_value = list()
+# a=int(0)
+# Noraml_Value =1
+#
+# while a<N-1:
+#     if (M[a]==1):
+#         score_value.insert(a,Noraml_Value)
+#         for i in range(a+1,N):
+#             if (M[a]== M[i]):
+#                 Noraml_Value= Noraml_Value+1
+#                 score_value.insert(i,Noraml_Value)
+#                 if (i==(N-1)):
+#                     a=i
+#             else:
+#                 Noraml_Value =1
+#                 a=i
+#                 break
+#     elif (M[a]==0):
+#         score_value.insert(a,0)
+#         a=a+1
+#         if (a==(N-1)):
+#             if (M[a]==1):
+#                 score_value.insert(a,1) # 예외처리
+#
+# print(sum(score_value))
 
-while a<N-1:
-    if (M[a]==1):
-        score_value.insert(a,Noraml_Value)
-        for i in range(a+1,N):
-            if (M[a]== M[i]):
-                Noraml_Value= Noraml_Value+1
-                score_value.insert(i,Noraml_Value)
-                if (i==(N-1)):
-                    a=i
-            else:
-                Noraml_Value =1
-                a=i
-                break
-    elif (M[a]==0):
-        score_value.insert(a,0)
-        a=a+1
-        if (a==(N-1)):
-            if (M[a]==1):
-                score_value.insert(a,1) # 예외처리
+# 회문 문자열 검사
+# N=int(input())
+# for i in range(N):
+#     s=input()
+#     s=s.upper()
+#     size=len(s)
+#     for j in range(size//2): # 최신화
+#         if s[j] != s[-1-j]:
+#             print('#%d'%(i+1) + " NO")
+#             break
+#     else:
+#         print('#%d YES'% (i+1))
+#
+#          # 인덱스 접근을 -로
+# ADDIT
+# N=int(input())
+# for i in range(N):
+#     s=input()
+#     s=s.upper()
+#     if s==s[::-1]: # S의 리버스와 같냐?
+#         print("#%d YES"%(i+1))
+#     else:
+#         print("#%d NO" % (i + 1))
 
-print(sum(score_value))
+# 숫자만 추출
+# s=input()
+# res = 0
+# for x in s: # 하나씩 하나씩
+#     if x.isdecimal():
+#         res = res * 10 + int(x) #10씩 곱하자
+# print(res)
+# cnt=0
+# for i in range(1,res+1):
+#     if res%i==0:
+#         cnt=cnt+1
+# print(cnt)
+# 카드 역배치
+# Card = [i for i in range(1,21)]
+# tmp=0
+# for _ in range(10):
+#     a, b= map(int, input().split()) # index 항상 +1
+#     for _ in range((b-a+1)//2):
+#         tmp = Card[a-1]
+#         Card[a-1] = Card[b-1]
+#         Card[b-1] = tmp
+#         a=a+1
+#         b=b-1
+#     tmp = 0
+#
+# for i in range(20):
+#     print(Card[i], end=' ')
 
 
