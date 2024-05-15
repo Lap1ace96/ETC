@@ -270,6 +270,7 @@
 #     else:
 #         print("#%d NO" % (i + 1))
 
+
 # 숫자만 추출
 # s=input()
 # res = 0
@@ -282,6 +283,7 @@
 #     if res%i==0:
 #         cnt=cnt+1
 # print(cnt)
+
 # 카드 역배치
 # Card = [i for i in range(1,21)]
 # tmp=0
@@ -299,3 +301,78 @@
 #     print(Card[i], end=' ')
 
 
+# 두 리스트 합치기
+#
+# n= int(input())
+# a=list(map(int,input().split()))
+# m=int(input())
+# b=list(map(int,input().split()))
+# p1=p2=0
+# c=[]
+#
+# while p1<n and p2<m:
+#     if a[p1] <= b[p2]:
+#         c.append(a[p1])
+#         p1=p1+1
+#     else:
+#         c.append(b[p2])
+#         p2=p2+1
+#
+# if p1<n:
+#     c=c+a[p1:]
+# if p2<m:
+#     c=c+b[p2:]
+# print(c)
+
+# 수들의 합
+# n,m = map(int,input().split())
+# a=list(map(int,input().split()))
+# lt=0
+# rt=1
+# tot =a[0]
+# cnt=0
+# while 1:
+#     if tot<m:
+#         if rt<n:
+#             tot=tot+a[rt]
+#             rt=rt+1
+#         else:
+#             break
+#     elif tot==m:
+#         cnt=cnt+1
+#         tot=tot-a[lt]
+#         lt=lt+1
+#     else:
+#         tot=tot-a[lt]
+#         lt=lt+1
+# print(cnt)
+
+# 격자판 최대합
+# A= int(input())
+# arr= list()
+# for i in range(A):
+#     arr.append(list(map(int,input().split())))
+#
+# largest = -100000
+# for i in range(A):
+#     sum1=sum2=0
+#     for j in range(A):
+#         sum1=sum1+arr[i][j]
+#         sum2=sum2+arr[j][i]
+#     if sum1>largest:
+#         largest=sum1
+#     if sum2>largest:
+#         largest=sum2
+# sum1=sum2=0
+#
+# for i in range(A):
+#     sum1=sum1+arr[i][i]
+#     sum2=sum2+arr[i][A-i-1]
+# if sum1>largest:
+#     largest=sum1
+# if sum2>largest:
+#     largest=sum2
+#
+# print(largest)
+
+# 사과나무(다이아몬드)
