@@ -1,6 +1,4 @@
-# 1. 먼저 투명한 창을 만들고, 시간 마다 빨간색으로 테두리를 변경하고 가운데에 그림이 나타나게 한다.
-# 2. 눈이랑 이런 깜빡이를 조금 둬서, 추가로 거시기 하게 한다.
-# 3.
+import time
 import time as Time
 import tkinter
 import pyautogui
@@ -8,35 +6,105 @@ import tkinter as tk
 import cv2
 import threading
 
-xml = 'C:/Users/Sim/Documents/GitHub/ETC/Ya_Me/HaarCascade_Xml/haarcascade_frontalface_alt.xml'
-face_Cascade = cv2.CascadeClassifier(xml)
+#---EAR Algorithm--------
+import dlib
+import imutils
+import argparse
+import numpy as np
+from imutils import face_utils
+from scipy.spatial import distance as dist
 
+# Not To Use VideoStream ▶VideoCaputer
+# from imutils.video import videostream
+# from imutils.video import FileVideoStream
 
-#-------------------------------------------OpenCV 부문
+#카메라 설정 ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
 def Camera_Function():
-    capture = cv2.VideoCapture(1)
+    capture = cv2.VideoCapture(0,cv2.CAP_DSHOW)
     capture.set(cv2.CAP_PROP_FRAME_WIDTH,640)
     capture.set(cv2.CAP_PROP_FRAME_HEIGHT,480)
     capture.set(cv2.CAP_PROP_FPS,15)
 
     while 1:
         ret, frame = capture.read()
-        frame = cv2.flip(frame,1) # 좌우 대칭 하고 싶음.
-        gray = cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY)
-        face = face_Cascade.detectMultiScale(gray,1.05,5)
+        if not ret:
+            break
 
-        if len(face):
-            for (x,y,w,h) in face:
-                cv2.rectangle(frame,(x,y),(x+w,y+h),(255,0,0),2)
-        if ret:
-            cv2.imshow("VideoFrame",frame)
-            if cv2.waitKey(1) & 0xFF == ord('q'): # 굳이 창 업데이트 및 키보드가 필요 없음.
-                 break
+        frame = cv2.flip(frame,1) # 좌우 대칭 하고 싶음.
+        frame = imutils.resize(frame, width=320)
+        gray = cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY)
+
+        rects=detector(gray,0)
+        for rect in rects:
+            shape = predictor(gray, rect)
+            shape = face_utils.shape_to_np(shape)
+
+            leftEye = shape[lStart:lEnd]
+            rightEye = shape[rStart:rEnd]
+            leftEAR = eye_aspect_ratio(leftEye)
+            rightEAR = eye_aspect_ratio(rightEye)
+            ear = (leftEAR + rightEAR) / 2.0
+
+            leftEyeHull = cv2.convexHull(leftEye)
+            rightEyeHull = cv2.convexHull(rightEye)
+            cv2.drawContours(frame, [leftEyeHull], -1, (0, 255, 0), 1)
+            cv2.drawContours(frame, [rightEyeHull], -1, (0, 255, 0), 1)
+
+            global COUNTER, TOTAL
+            if ear < EYE_AR_THRESH:
+                COUNTER += 1
+            else:
+                if COUNTER >= EYE_AR_CONSEC_FRAMES:
+                    TOTAL += 1
+                    COUNTER = 0
+
+            cv2.putText(frame, "Blinks: {}".format(TOTAL), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+
+        cv2.imshow("VideoFrame",frame)
+        if cv2.waitKey(1) & 0xFF == ord('q'): # 굳이 창 업데이트 및 키보드가 필요 없음.
+            break
 
     capture.release()
     cv2.destroyAllWindows()
 
-#-------------------------------------------OpenCV 부문
+
+# Event Handelr, 매 시간 마다
+def delayed_function():
+    root.attributes('-topmost', True)
+    root.focus_force() # Focus 오류는 regedit 및 서비스를 통해서 수정이 가능함.
+    root.focus_set() # set 오류는 regedit 및 서비스를 통해서 수정이 가능함.
+    root.after(5000,delayed_function)
+
+# EAR Definition ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+def eye_aspect_ratio(eye):
+    A = dist.euclidean(eye[1],eye[5])
+    B = dist.euclidean(eye[2],eye[4])
+    C= dist.euclidean(eye[0],eye[3])
+    ear = (A+B) / (2.0 * C)
+    return ear
+
+
+EYE_AR_THRESH = 0.3
+EYE_AR_CONSEC_FRAMES = 3
+global COUNTER, TOTAL, T1, T2
+COUNTER = 0
+TOTAL = 0
+
+
+detector = dlib.get_frontal_face_detector()
+predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
+(lStart, lEnd) = face_utils.FACIAL_LANDMARKS_IDXS["left_eye"]
+(rStart, rEnd) = face_utils.FACIAL_LANDMARKS_IDXS["right_eye"]
+
+
+# Time Definition ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+def Time_Function(Start_Count = 0, MaxCalls = 2440):
+    global TOTAL
+    time.sleep(60)
+    if TO
+
+
+# Tkinter ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
 
 # Monitor Size Return
 Monitor_Size = pyautogui.size()
@@ -72,17 +140,12 @@ label = tk.Label(Image_Frame,image=Image)
 label.place(x=(Monitor_Width-10 - Image_Width)//2,y=(Monitor_Height-10-Image_Height)//2)
 # label.pack()  Label.Place와 pack은 충돌 메서드임. 하나만 사용하자.
 
-
-# Event Handelr, 매 시간 마다
-def delayed_function():
-    root.attributes('-topmost', True)
-    root.focus_force() # Focus 오류는 regedit 및 서비스를 통해서 수정이 가능함.
-    root.focus_set() # set 오류는 regedit 및 서비스를 통해서 수정이 가능함.
-    root.after(5000,delayed_function)
-
 root.after(5000,delayed_function)
+
 
 Camera_Function_Value = threading.Thread(target=Camera_Function)
 Camera_Function_Value.start()
+Time_Function_Value = threading.Thread(target=Time_Function)
+
 
 root.mainloop()
