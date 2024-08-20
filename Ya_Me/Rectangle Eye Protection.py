@@ -14,9 +14,20 @@ import numpy as np
 from imutils import face_utils
 from scipy.spatial import distance as dist
 
+import os
+from PIL import Image
+
+# def resource_path(relpath):
+#     with open('shape_predictor_68_face_landmarks.dat','rb') as file:
+#         data = file.read()
+#     image = Image.open('Cho Rong.png')
+#     image.show()
+
 # Not To Use VideoStream ▶VideoCaputer
 # from imutils.video import videostream
 # from imutils.video import FileVideoStream
+
+
 
 #카메라 설정 ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
 def Camera_Function():
@@ -85,8 +96,8 @@ def eye_aspect_ratio(eye):
     return ear
 
 
-EYE_AR_THRESH = 0.3
-EYE_AR_CONSEC_FRAMES = 5 # 5프레임 동안 Thresold 조건을 확인하기 위함. ← 노이즈 방지 가능.
+EYE_AR_THRESH = 0.2
+EYE_AR_CONSEC_FRAMES = 4 # 5프레임 동안 Thresold 조건을 확인하기 위함. ← 노이즈 방지 가능.
 global COUNTER, TOTAL
 COUNTER = 0
 TOTAL = 0
@@ -99,9 +110,9 @@ predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
 
 # Time Definition ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
 def Time_Function(Start_Count = 0, MaxCalls = 2440):
-    time.sleep(10) # 60초에 한 번씩 실행
+    time.sleep(600) # 60초에 한 번씩 실행
     global TOTAL
-    if TOTAL <= 5:
+    if TOTAL <= 3000:
         print("눈을 깜빡이세요 용사님!")
         Window_Function()
     TOTAL = 0
@@ -155,6 +166,6 @@ Camera_Function_Value = threading.Thread(target=Camera_Function)
 Camera_Function_Value.start()
 Time_Function_Value = threading.Thread(target=Time_Function)
 Time_Function_Value.start()
-Window_Function_Value = threading.Thread(target=Window_Function)
-Window_Function_Value.start()
+# Window_Function_Value = threading.Thread(target=Window_Function)
+# Window_Function_Value.start()
 
